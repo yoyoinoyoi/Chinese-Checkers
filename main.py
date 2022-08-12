@@ -10,7 +10,7 @@ players = ["alphabeta", "alphabeta"]
 # 盤面の初期化
 cc = Chinese_checkers(num, players)
 
-# gameloop 曜の変数
+# gameloop 用の変数
 n = randint(1, num)
 while not cc.gameset(n):
     cc.display(n)

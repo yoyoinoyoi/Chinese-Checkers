@@ -6,7 +6,7 @@ from cc_module.base.board import *
 def mcts_action(N):# 一番有効な手を返す(i, j) -> (x, y)の[i, j, x, y]
 
     class Node:
-        # ノードの初期化 state = board　とみてよい
+        # ノードの初期化 state = board とみてよい
         def __init__(self, state, position):
             self.n_board = Board(state, position)
             self.w = 0 # 累計価値

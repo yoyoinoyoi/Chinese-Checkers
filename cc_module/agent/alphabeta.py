@@ -24,7 +24,7 @@ class AB:
                 new_board = Board(BOARD.num, BOARD.board, BOARD.position)
                 new_board.move(posi, posj, posx, posy, n)
 
-                if new_board.gameset((n % new_board.num) +1): #動かしたとき、ゲームセット
+                if new_board.gameset(n): #動かしたとき、ゲームセット
                     v = self.value_func(new_board, n)
                 else:
                     v, _1, _2 = self.move_not_n(depth -1, new_board, value, n, (n % new_board.num) +1)
@@ -51,8 +51,8 @@ class AB:
                 new_board = Board(BOARD.num, BOARD.board, BOARD.position)
                 new_board.move(posi, posj, posx, posy, k)
 
-                if new_board.gameset((k % new_board.num) +1): #動かしたとき、ゲームセット
-                    v = self.value_func(new_board, k)
+                if new_board.gameset(k): #動かしたとき、ゲームセット
+                    v = self.value_func(new_board, n)
                 elif ((k % new_board.num) + 1) == n: #動かした後、n番目の人に戻る
                     v, _1, _2 = self.move_n(depth -1, new_board, value, n)
                 else: #動かした後、n番目以外の人になる
@@ -103,9 +103,9 @@ class Alphabeta(Board):
         ab = AB()
         ab_board = Board(self.num, self.board, self.position)
         _, mb, ma = ab.move_n(3, ab_board, self.inf, n) ##depthは決めてあげる
-        posi, posj = mb[0], mb[1]
-        posx, posy = ma[0], ma[1]
-        self.move(posi, posj, posx, posy, n)
-        #self.board = copy.deepcopy(ab_board.board)
-        #self.position = copy.deepcopy(ab_board.position)
-        return
+        # posi, posj = mb[0], mb[1]
+        # posx, posy = ma[0], ma[1]
+        # self.move(posi, posj, posx, posy, n)
+        # for i in range(self.num):
+        #     print('player {} positions: {}'.format(i+1, self.position[i]))
+        return mb, ma

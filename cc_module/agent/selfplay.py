@@ -55,7 +55,7 @@ class Selfplay(Board):
 
             flag = 0
 
-        self.move(i, j, x, y, n)
+        # self.move(i, j, x, y, n)
         print('ok. ({}, {}) -> ({}, {})'.format(i, j, x, y))
         #self.Map()
-        return
+        return [i, j], [x, y]

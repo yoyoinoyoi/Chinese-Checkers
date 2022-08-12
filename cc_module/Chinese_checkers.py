@@ -38,14 +38,12 @@ class Chinese_checkers():
         #print(self.num, self.players)
         agent = self.players[n-1]
         if agent == "alphabeta":
-            self.main_board.alphabeta(n)
-            return
+            mb, ma = self.main_board.alphabeta(n)
         elif agent == "mcts":
-            self.main_board.mcts(n)
-            return
+            mb, ma = self.main_board.mcts(n)
         elif agent == "selfplay":
-            self.main_board.selfplay(n)
-            return
+            mb, ma = self.main_board.selfplay(n)
+        (self.main_board).move(mb[0], mb[1], ma[0], ma[1], n)
         
     def gameset(self, n):
         for j in range(6):
@@ -81,5 +79,7 @@ class Chinese_checkers():
         print('11           {} {} {} {} {} {} {} {} {} {} {} {} {} '.format(*sc(self.main_board.board[11])))
         print('12            {} {} {} {} {} {} {} {} {} {} {} {} {} '.format(*sc(self.main_board.board[12])))
         print('                   0   2   4   6   8   10  12')
+        for i in range(self.main_board.num):
+            print('player {} positions: {}'.format(i+1, self.main_board.position[i]))
         return
     

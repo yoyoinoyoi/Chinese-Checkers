@@ -47,7 +47,9 @@ class Board():
         for np in range(6): #position のほうも更新を行う
             if (self.position[n-1][np][0] == i) and (self.position[n-1][np][1] == j):
                 self.position[n-1][np] = [x, y]
-                self.sort_position()
+                #self.sort_position()
+                self.position[n-1] = sorted(self.position[n-1], key = lambda x:x[1])
+                self.position[n-1] = sorted(self.position[n-1], key = lambda x:x[0])
                 return
 
     def sort_position(self):#2つの要素のみを持った配列を配列する
