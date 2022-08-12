@@ -5,7 +5,7 @@ from cc_module.Chinese_checkers import *
 num = 2
 
 # プレイヤーの種類
-players = ["alphabeta", "alphabeta"]
+players = ["selfplay", "alphabeta"]
 
 # 盤面の初期化
 cc = Chinese_checkers(num, players)

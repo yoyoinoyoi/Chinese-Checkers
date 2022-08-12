@@ -103,9 +103,4 @@ class Alphabeta(Board):
         ab = AB()
         ab_board = Board(self.num, self.board, self.position)
         _, mb, ma = ab.move_n(3, ab_board, self.inf, n) ##depthは決めてあげる
-        # posi, posj = mb[0], mb[1]
-        # posx, posy = ma[0], ma[1]
-        # self.move(posi, posj, posx, posy, n)
-        # for i in range(self.num):
-        #     print('player {} positions: {}'.format(i+1, self.position[i]))
         return mb, ma

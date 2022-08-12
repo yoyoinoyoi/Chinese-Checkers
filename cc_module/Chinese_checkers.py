@@ -79,7 +79,7 @@ class Chinese_checkers():
         print('11           {} {} {} {} {} {} {} {} {} {} {} {} {} '.format(*sc(self.main_board.board[11])))
         print('12            {} {} {} {} {} {} {} {} {} {} {} {} {} '.format(*sc(self.main_board.board[12])))
         print('                   0   2   4   6   8   10  12')
-        for i in range(self.main_board.num):
-            print('player {} positions: {}'.format(i+1, self.main_board.position[i]))
+        # for i in range(self.main_board.num):
+        #     print('player {} positions: {}'.format(i+1, self.main_board.position[i]))
         return
     
