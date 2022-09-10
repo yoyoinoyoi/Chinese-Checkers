@@ -39,11 +39,16 @@ class Chinese_checkers():
         agent = self.players[n-1]
         if agent == "alphabeta":
             mb, ma = self.main_board.alphabeta(n)
-        elif agent == "mcts":
-            mb, ma = self.main_board.mcts(n)
+            self.main_board.move(mb[0], mb[1], ma[0], ma[1], n)
+            
         elif agent == "selfplay":
             mb, ma = self.main_board.selfplay(n)
-        (self.main_board).move(mb[0], mb[1], ma[0], ma[1], n)
+            self.main_board.move(mb[0], mb[1], ma[0], ma[1], n)
+            
+        elif agent == "mcts":
+            bb, bp = self.main_board.mcts_action(n)
+            self.main_board.board = copy.deepcopy(bb)
+            self.main_board.position = copy.deepcopy(bp)
         
     def gameset(self, n):
         for j in range(6):
