@@ -1,4 +1,4 @@
-# Diamond_game
+# Chinese-Checkers
 
 mcts.py, は正しく実行されません. 現在はselfplay, alphabeta エージェントのみ使うことができます.
 
