@@ -52,9 +52,9 @@ class Board():
                 self.position[n-1] = sorted(self.position[n-1], key = lambda x:x[0])
                 return
 
-    def sort_position(self):#2つの要素のみを持った配列を配列する
-        self.position.sort(key = lambda x:x[1])
-        self.position.sort(key = lambda x:x[0])
+    def sort_position(self, n):#2つの要素のみを持った配列を配列する
+        self.position[n-1] = sorted(self.position[n-1], key = lambda x:x[1])
+        self.position[n-1] = sorted(self.position[n-1], key = lambda x:x[0])
         return
 
     def prohibit(self):#禁止状態の検出

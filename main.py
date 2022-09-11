@@ -1,11 +1,11 @@
 from random import randint
 
 from cc_module.Chinese_checkers import *
-
-num = 2
+import settings
 
 # プレイヤーの種類
-players = ["mcts", "alphabeta"]
+players = settings.players
+num = len(players)
 
 # 盤面の初期化
 cc = Chinese_checkers(num, players)

@@ -49,6 +49,7 @@ class Chinese_checkers():
             bb, bp = self.main_board.mcts_action(n)
             self.main_board.board = copy.deepcopy(bb)
             self.main_board.position = copy.deepcopy(bp)
+            self.main_board.sort_position(n)
         
     def gameset(self, n):
         for j in range(6):
@@ -58,7 +59,7 @@ class Chinese_checkers():
         return True
 
     def display(self, n):
-        dic = {-1:'\\', 0:'-', 1:'o', 2:'x', 3:'▲', 4:'●', 5:'+', 6:'▼'}
+        dic = {-1:'\\', 0:'-', 1:'o', 2:'x', 3:'+', 4:'●', 5:'@', 6:'▼'}
         
         def sc(l):
             ret = []

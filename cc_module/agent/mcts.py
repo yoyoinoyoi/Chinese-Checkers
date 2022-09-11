@@ -1,6 +1,8 @@
+from copy import deepcopy
 import time
 import random
 import math
+from copy import deepcopy
 
 from cc_module.base.board import *
 
@@ -11,8 +13,8 @@ from cc_module.data.data6 import *
 
 class Node:
     # ノードの初期化 state = board とみてよい
-    def __init__(self, n, state, position):
-        self.n_board = Board(n, state, position)
+    def __init__(self, num, state, position):
+        self.n_board = Board(deepcopy(num), deepcopy(state), deepcopy(position))
         self.w = 0 # 累計価値
         self.n = 0 # 試行回数
         self.child_nodes = None  # 子ノード群
@@ -24,9 +26,8 @@ class Node:
         
         # 勝ったとき
         if self.n_board.gameset(k): 
-            # 勝敗結果で価値を取得
-            value = 1
             # 累計価値と試行回数の更新
+            value = 1
             self.w += value
             self.n += 1
             return value
@@ -34,9 +35,8 @@ class Node:
         #負けた時
         for i in range(self.n_board.num):
             if self.n_board.gameset(i):
-                value = -1 
-
             # 累計価値と試行回数の更新
+                value = -1
                 self.w += value
                 self.n += 1
                 return value
@@ -65,7 +65,8 @@ class Node:
         # 子ノードが存在する時
         else:
             # UCB1が最大の子ノードの評価で価値を取得
-            value = self.next_child_node(k).evaluate((k % self.n_board.num) +1)
+            next_node = self.next_child_node(k)
+            value = next_node.evaluate((k % self.n_board.num) +1)
 
             # 累計価値と試行回数の更新
             self.w += value
@@ -81,7 +82,7 @@ class Node:
             posj = cur_pos[i][1]
             cand = self.n_board.can_move(posi, posj)
             for j in range(len(cand)):
-                if self.enter(posi, posj, cand[j][0], cand[j][1], k) > 0:
+                # if self.enter(posi, posj, cand[j][0], cand[j][1], k) > 0:
                     #盤面的距離が小さくなればそれをcandidateに追加する
                     new_n_board = Board(self.n_board.num, self.n_board.board, self.n_board.position)
                     new_n_board.move(posi, posj, cand[j][0], cand[j][1], k)
@@ -92,6 +93,9 @@ class Node:
     # UCB1が最大の子ノードの取得
     def next_child_node(self, k):
         # 試行回数が0の子ノードを返す
+        if self.child_nodes == None:
+            print("ERROR")
+            return
         for child_node in self.child_nodes:
             if child_node.n == 0:
                 return child_node
@@ -106,7 +110,7 @@ class Node:
 
         # UCB1が最大の子ノードを返す
         if self.n_board.num == k:
-            ucb1_max = -100000
+            ucb1_max = -100000000
             index_list = []
             for s in range(len(ucb1_values)):
                 if ucb1_values[s] == ucb1_max:
@@ -118,7 +122,7 @@ class Node:
             return self.child_nodes[random.choice(index_list)]
         # UCB1が最小の子ノードを返す   
         else:
-            ucb1_min = 100000
+            ucb1_min = 100000000
             index_list = []
             for s in range(len(ucb1_values)):
                 if ucb1_values[s] == ucb1_min:
@@ -133,7 +137,7 @@ class Node:
         C = 1
         return w/n + C*(2*math.log(N)/n)**0.5
 
-    def playout(self, k, depth = 1000):# プレイアウト を行う。nが勝った場合には1,負けた場合には0を返す
+    def playout(self, k, depth = 500):# プレイアウト を行う。nが勝った場合には1,負けた場合には-1を返す
         # 負けは状態価値0
         if depth == 0: #詰み状況によるループの防止
             return -1
@@ -145,12 +149,11 @@ class Node:
             self.random_action(k)
         else:
             self.greedy_action(k)#error
-
-        result = self.n_board.gameset(k)
-        if result > 0:
-            if self.n_board.num == result:
-                return 1
-            else:
+        
+        if self.n_board.gameset(k):
+            return 1
+        for i in range(self.n_board.num):
+            if self.n_board.gameset(i):
                 return -1
 
         return self.playout((k % self.n_board.num) + 1, depth-1)
@@ -207,7 +210,7 @@ class Node:
         if (k % 3 == 0) and (self.n_board.num == 6):
             dist1 = abs(top[k-1][0] - posi) + abs(top[k-1][1] - posj)
             dist2 = abs(top[k-1][0] - posx) + abs(top[k-1][1] - posy)
-        elif (k == 2) and (self.n_board == 3):
+        elif (k == 2) and (self.n_board.num == 3):
             dist1 = abs(top[k-1][0] - posi) + abs(top[k-1][1] - posj)
             dist2 = abs(top[k-1][0] - posx) + abs(top[k-1][1] - posy)
         else:
@@ -240,8 +243,8 @@ class MCTS(Board):
 
         for c in root_node.child_nodes: #c: 盤面
             n_list.append(c.n)
-            legal_pos.append(c.n_board.position)
             legal_state.append(c.n_board.board)
+            legal_pos.append(c.n_board.position)
 
         #決定した手で実際に動かす
         n_value = -100000
@@ -252,9 +255,10 @@ class MCTS(Board):
             if n_list[nl] > n_value:
                 n_value = n_list[nl]
                 index_list = [nl]
-
-        bb = copy.deepcopy(legal_state[random.choice(index_list)])   
-        bp = copy.deepcopy(legal_pos[random.choice(index_list)] )
+        id = random.choice(index_list)
+        bb = copy.deepcopy(legal_state[id])   
+        bp = copy.deepcopy(legal_pos[id] )
         print("calculate: {}".format(cal))
+        print("position", bp)
 
         return [bb, bp]
