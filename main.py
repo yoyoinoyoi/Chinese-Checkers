@@ -12,7 +12,7 @@ cc = Chinese_checkers(num, players)
 
 # gameloop 用の変数
 n = randint(1, num)
-while not cc.gameset(n):
+while not cc.main_board.gameset(n):
     cc.display(n)
     cc.play(n)
     n = (n % num) +1

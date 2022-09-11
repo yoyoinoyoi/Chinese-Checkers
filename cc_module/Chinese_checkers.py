@@ -51,13 +51,6 @@ class Chinese_checkers():
             self.main_board.position = copy.deepcopy(bp)
             self.main_board.sort_position(n)
         
-    def gameset(self, n):
-        for j in range(6):
-            if self.main_board.position[n-1][j][0] != self.goal[n-1][j][0]:
-                if self.main_board.position[n-1][j][1] != self.goal[n-1][j][1]:
-                    return False
-        return True
-
     def display(self, n):
         dic = {-1:'\\', 0:'-', 1:'o', 2:'x', 3:'+', 4:'●', 5:'@', 6:'▼'}
         
