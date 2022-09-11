@@ -221,8 +221,10 @@ class Node:
 
 class MCTS(Board):
     
-    def mcts_action(self, n):# 一番有効な手を返す(i, j) -> (x, y)の[i, j, x, y]
-
+    def mcts_action(self, n, config):# 一番有効な手を返す(i, j) -> (x, y)の[i, j, x, y]
+        
+        thinking_time = config[0]
+        val = config[1]
         # 現在の局面のノードの作成
         root_node = Node(self.num, self.board, self.position)
         root_node.expand(n)
@@ -232,7 +234,7 @@ class MCTS(Board):
 
         cal = 0
         #for _ in range(simulation_list[N-1]):
-        while (time.time() - mcts_thinking < 9.99):
+        while (time.time() - mcts_thinking < thinking_time):
             root_node.evaluate(n)
             cal+=1
 
@@ -259,6 +261,6 @@ class MCTS(Board):
         bb = copy.deepcopy(legal_state[id])   
         bp = copy.deepcopy(legal_pos[id] )
         print("calculate: {}".format(cal))
-        print("position", bp)
+        # print("position", bp)
 
         return [bb, bp]

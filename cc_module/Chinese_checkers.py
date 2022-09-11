@@ -37,16 +37,16 @@ class Chinese_checkers():
     def play(self, n):
         #print(self.num, self.players)
         agent = self.players[n-1]
-        if agent == "alphabeta":
-            mb, ma = self.main_board.alphabeta(n)
+        if agent[0] == "alphabeta":
+            mb, ma = self.main_board.alphabeta(n, agent[1:])
             self.main_board.move(mb[0], mb[1], ma[0], ma[1], n)
             
-        elif agent == "selfplay":
+        elif agent[0] == "selfplay":
             mb, ma = self.main_board.selfplay(n)
             self.main_board.move(mb[0], mb[1], ma[0], ma[1], n)
             
-        elif agent == "mcts":
-            bb, bp = self.main_board.mcts_action(n)
+        elif agent[0] == "mcts":
+            bb, bp = self.main_board.mcts_action(n, agent[1:])
             self.main_board.board = copy.deepcopy(bb)
             self.main_board.position = copy.deepcopy(bp)
             self.main_board.sort_position(n)
@@ -62,7 +62,7 @@ class Chinese_checkers():
             return ret
 
         print('---------------------------------------------------------')
-        print('player is {} ({}, {})'.format(n, dic[n], self.players[n-1]))
+        print('player is {} ({}, {})'.format(n, dic[n], self.players[n-1][0]))
         print(' 0   2   4   6   8   10  12')
         print('0 {} {} {} {} {} {} {} {} {} {} {} {} {} '.format(*sc(self.main_board.board[0])))
         print('1  {} {} {} {} {} {} {} {} {} {} {} {} {} '.format(*sc(self.main_board.board[1])))
@@ -77,7 +77,7 @@ class Chinese_checkers():
         print('10          {} {} {} {} {} {} {} {} {} {} {} {} {} '.format(*sc(self.main_board.board[10])))
         print('11           {} {} {} {} {} {} {} {} {} {} {} {} {} '.format(*sc(self.main_board.board[11])))
         print('12            {} {} {} {} {} {} {} {} {} {} {} {} {} '.format(*sc(self.main_board.board[12])))
-        print('                   0   2   4   6   8   10  12')
+        print('               0   2   4   6   8   10  12')
         # for i in range(self.main_board.num):
         #     print('player {} positions: {}'.format(i+1, self.main_board.position[i]))
         return

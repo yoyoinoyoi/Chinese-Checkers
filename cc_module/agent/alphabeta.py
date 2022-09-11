@@ -7,8 +7,8 @@ from cc_module.data.data6 import *
 
 class AB:
     
-    def __init__(self, a = 1): #評価関数の係数の決定
-        self.a = a
+    def __init__(self, func): #評価関数の係数の決定
+        self.func = func
         self.inf = 10**10
 
     def move_n(self, depth, BOARD, limit, n):#番号nの人の指し手を考える.実装はα-β法
@@ -70,6 +70,9 @@ class AB:
     #評価関数のセット
 
     def value_func(self, b, n):#agent 別に評価関数を割り振る
+        if self.func == "func1":
+            return self.val_func1(b, n)
+        
         return self.val_func1(b, n)
 
     def val_func1(self, b, n):#評価関数1
@@ -94,13 +97,15 @@ class AB:
                     pos_score[i] += max(abs(top[i][0] - b.position[i][k][0]), abs(top[i][1] - b.position[i][k][1]))
 
         #pos_score[i] が盤面的な距離になっている(この距離が小さいほど良い)
-        v = -b.num * pos_score[n-1] + self.a * sum(pos_score)
+        v = -b.num * pos_score[n-1] + sum(pos_score)
         return v
 
 class Alphabeta(Board):
     
-    def alphabeta(self, n):#コンピュータが駒を動かすまでの流れ
-        ab = AB()
+    def alphabeta(self, n, config):#コンピュータが駒を動かすまでの流れ
+        depth = config[0]
+        func = config[1]
+        ab = AB(func)
         ab_board = Board(self.num, self.board, self.position)
-        _, mb, ma = ab.move_n(3, ab_board, self.inf, n) ##depthは決めてあげる
+        _, mb, ma = ab.move_n(depth, ab_board, self.inf, n) ##depthは決めてあげる
         return mb, ma
